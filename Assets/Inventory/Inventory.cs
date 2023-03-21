@@ -140,9 +140,12 @@ public static class Inventory
 		return -1;
 	}
 
-	delegate void ItemEvent(Cell cell);
+	public delegate void ItemEvent(Cell cell);
 
-	static event ItemEvent OnDropItem;
+	public static event ItemEvent OnDropItem;
+	public static event ItemEvent OnTakeItem;
+	public static event ItemEvent OnAddItem;
+	public static event ItemEvent OnChangeSelectedItem;
 
 	public class Item
 	{ 
