@@ -20,9 +20,17 @@ public class InvPlayer : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyUp(KeyCode.E))
+		if (Input.GetKeyUp(InvSettingsKey.TakeItem))
 		{
+			RaycastHit hi = new RaycastHit();
 
+			if (Physics.Raycast(m_Camera.transform.position, m_Camera.transform.forward, out hi, 5))
+			{
+				GameObject hitGM = hi.collider.gameObject;
+				if (hitGM.GetComponent<InvItem>())
+					if (Inventory.AddItem(hitGM.GetComponent<InvItem>().item))
+						Destroy(hitGM);
+			}
 		}
 	}
 }

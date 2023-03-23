@@ -18,7 +18,46 @@ public static class Inventory
 
 	public static void Show() { }
 	public static void Hide() { }
-	
+
+	public static bool AddItem(Cell cell)
+	{
+		if (!AddItm(cell, Bagpack))
+			return AddItm(cell, Belt);
+		return true;
+
+		static bool AddItm(Cell cell, Cell[] cells)
+		{
+			for (int i = 0; i < cells.Length; i++)
+			{
+				if (cells[i].Id == -1)
+				{
+					cells[i].Id = cell.Id;
+					cells[i].Num = cell.Num;
+
+					OnAddItem?.Invoke(cell);
+					return true;
+				}
+				else if (cells[i].Id == cell.Id)
+				{
+					if (Items[cells[i].Id].MaxCol >= cell.Num + cells[i].Num)
+					{
+						cells[i].Num += cell.Num;
+						OnAddItem?.Invoke(cell);
+						return true;
+					}
+					else
+					{
+						cell.Num = Items[cells[i].Id].MaxCol - cells[i].Num;
+						uint temp = Items[cells[i].Id].MaxCol - cells[i].Num;
+						cells[i].Num = Items[cells[i].Id].MaxCol;
+						OnAddItem?.Invoke(new Cell(cells[i].Id, temp));
+					}
+				}
+			}
+			return false;
+		}
+	}
+
 	public static int Find(uint id) 
 	{
 		if (id >= Items.Length) Debug.LogError("Find error");
@@ -143,17 +182,18 @@ public static class Inventory
 	public delegate void ItemEvent(Cell cell);
 
 	public static event ItemEvent OnDropItem;
-	public static event ItemEvent OnTakeItem;
 	public static event ItemEvent OnAddItem;
 	public static event ItemEvent OnChangeSelectedItem;
 
+	[System.Serializable]
 	public class Item
 	{ 
-		public readonly string Name;
-		public readonly Sprite Icon;
-		public readonly ItemType Type;
-		public readonly string Description;
-		public readonly uint MaxCol;
+		public string Name;
+		public Sprite Icon;
+		public ItemType Type;
+		public GameObject gameObject;
+		public string Description;
+		public uint MaxCol;
 
 		public Item(string name, Sprite icon, ItemType type, string description, uint maxCol)
 		{
@@ -164,6 +204,7 @@ public static class Inventory
 			MaxCol = maxCol;
 		}
 	}
+	[System.Serializable]
 	public class Cell
 	{
 		public int Id;
