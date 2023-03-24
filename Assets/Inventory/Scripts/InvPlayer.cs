@@ -14,7 +14,14 @@ public class InvPlayer : MonoBehaviour
 
 	private void Inventory_OnDropItem(Inventory.Cell cell)
 	{
-		
+		GameObject spawnObject = Inventory.Items[cell.Id].SpawnObject;
+		GameObject IsSpawn = Instantiate(spawnObject, transform.position, transform.rotation);
+		if (IsSpawn.GetComponent<InvItem>())
+		{
+			InvItem item = IsSpawn.GetComponent<InvItem>();
+			item.item.Id = cell.Id;
+			item.item.Num = cell.Num;
+		}
 	}
 
 	// Update is called once per frame
@@ -31,6 +38,10 @@ public class InvPlayer : MonoBehaviour
 					if (Inventory.AddItem(hitGM.GetComponent<InvItem>().item))
 						Destroy(hitGM);
 			}
+		}
+		else if (Input.GetKeyUp(KeyCode.N))
+		{
+			Inventory.Drop(0);
 		}
 	}
 }

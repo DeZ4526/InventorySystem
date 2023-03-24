@@ -8,5 +8,9 @@ public class ItemsSettings : MonoBehaviour
 	private GameObject errorObject;
 	public GameObject ErrorObject { get => errorObject; }
 
-	void Start() => Inventory.Items ??= Items;
+	void Start()
+	{
+		Inventory.Items ??= Items;
+		Inventory.ErrorObject ??= ErrorObject;
+	}
 }

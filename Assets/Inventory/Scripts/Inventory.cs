@@ -1,10 +1,17 @@
+using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using UnityEngine;
 using static Inventory;
 
 public static class Inventory
 {
+	static Inventory()
+	{
+		for (int i = 0; i < Bagpack.Length; i++)
+			Bagpack[i] = new Cell();
+		for (int i = 0; i < Belt.Length; i++)
+			Belt[i] = new Cell();
+	}
 	public enum ItemType : byte
 	{
 
@@ -15,9 +22,20 @@ public static class Inventory
 	public static Cell[] Belt = new Cell[5];
 
 	public static Cell SelectedItem = new Cell();
+	public static GameObject ErrorObject = null;
 
-	public static void Show() { }
-	public static void Hide() { }
+	public static bool IsOpen { get; private set; }
+
+	public static void Show() 
+	{ 
+		IsOpen = true;
+		OnShow?.Invoke();
+	}
+	public static void Hide()
+	{
+		IsOpen = false;
+		OnHide?.Invoke();
+	}
 
 	public static bool AddItem(Cell cell)
 	{
@@ -119,6 +137,9 @@ public static class Inventory
 				Debug.LogError("Drop object error\nThe required quantity is too large");
 			}
 			OnDropItem?.Invoke(new Cell(cells[cellId].Id, num));
+			cells[cellId].Num -= num;
+			if (cells[cellId].Num <= 0)
+				cells[cellId].Clear();
 			return true;
 		}
 		else
@@ -146,8 +167,7 @@ public static class Inventory
 	{
 		if(Bagpack.Length < cellId)
 		{
-			Bagpack[cellId].Id = -1;
-			Bagpack[cellId].Num = 0;
+			Bagpack[cellId].Clear();
 			return true;
 		}
 		return false;
@@ -156,21 +176,43 @@ public static class Inventory
 	{
 		if (Belt.Length < cellId)
 		{
-			Belt[cellId].Id = -1;
-			Belt[cellId].Num = 0;
+			Belt[cellId].Clear();
 			return true;
 		}
 		return false;
 	}
 
-	public static void SetSelectedItem(uint cellId) 
+	public static void SetSelectedItem(Cell cell) 
 	{ 
-		
+		if(SelectedItem.Id == -1)
+		{
+			SelectedItem.Id = cell.Id;
+			SelectedItem.Num = cell.Num;
+			cell.Clear();
+		}
+		else if(cell.Id == -1)
+		{
+			cell.Id = SelectedItem.Id;
+			cell.Num = SelectedItem.Num;
+			SelectedItem.Clear();
+		}
+		else if (cell.Id == SelectedItem.Id)
+		{
+			if(cell.Num + SelectedItem.Num <= Items[SelectedItem.Id].MaxCol)
+			{
+				cell.Id = SelectedItem.Id;
+				cell.Num += SelectedItem.Num;
+				SelectedItem.Clear();
+			}
+			else
+			{
+				SelectedItem.Num = Items[SelectedItem.Id].MaxCol - cell.Num;
+				cell.Num = Items[SelectedItem.Id].MaxCol;
+			}
+		}
+		OnChangeSelectedItem?.Invoke(cell);
 	}
-	public static void SetSelectedItemBelt(uint cellId) { }
 
-	public static void SetCellFromSelecteItem(uint cellId) { }
-	public static void SetCellFromSelecteItemBelt(uint cellId) { }
 
 
 	private static int GetId(string name)
@@ -180,10 +222,14 @@ public static class Inventory
 	}
 
 	public delegate void ItemEvent(Cell cell);
+	
 
 	public static event ItemEvent OnDropItem;
 	public static event ItemEvent OnAddItem;
 	public static event ItemEvent OnChangeSelectedItem;
+
+	public static event Action OnShow;
+	public static event Action OnHide;
 
 	[System.Serializable]
 	public class Item
@@ -191,7 +237,9 @@ public static class Inventory
 		public string Name;
 		public Sprite Icon;
 		public ItemType Type;
-		public GameObject gameObject;
+		[SerializeField]
+		private GameObject gameObject;
+		public GameObject SpawnObject { get => gameObject ?? ErrorObject; }
 		public string Description;
 		public uint MaxCol;
 
@@ -218,6 +266,11 @@ public static class Inventory
 		{
 			Id = id;
 			Num = num;
+		}
+		public void Clear()
+		{
+			Id = -1;
+			Num = 0;
 		}
 	}
 }
