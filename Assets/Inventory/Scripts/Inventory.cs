@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static Inventory;
 
 public static class Inventory
 {
@@ -18,7 +17,7 @@ public static class Inventory
 	}
 	public static Item[] Items = null;
 
-	public static Cell[] Bagpack = new Cell[15];
+	public static Cell[] Bagpack = new Cell[20];
 	public static Cell[] Belt = new Cell[5];
 
 	public static Cell SelectedItem = new Cell();

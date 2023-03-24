@@ -42,11 +42,15 @@ public class InvUI : MonoBehaviour
 
 	private void Inventory_OnHide()
 	{
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 		InventoryUi.SetActive(false);
 	}
 
 	private void Inventory_OnShow()
 	{
+		Cursor.lockState = CursorLockMode.Confined;
+		Cursor.visible = true;
 		InventoryUi.SetActive(true);
 		ReloadUIElements();
 	}

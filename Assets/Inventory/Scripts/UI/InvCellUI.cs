@@ -11,7 +11,7 @@ public class InvCellUI : MonoBehaviour
 
 	public void Click()
 	{
-		Inventory.SetSelectedItem(cell);
+		if(Inventory.IsOpen) Inventory.SetSelectedItem(cell);
 	}
 
 	public void SetInfo(Inventory.Cell cell)

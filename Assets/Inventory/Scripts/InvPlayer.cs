@@ -1,15 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InvPlayer : MonoBehaviour
 {
 	[SerializeField]
 	private Camera m_Camera;
-
+	[SerializeField]
+	private Transform Paws;
+	private Transform[] childPaws;
 	void Start()
 	{
 		Inventory.OnDropItem += Inventory_OnDropItem;
+		childPaws = new Transform[Paws.childCount];
+		for (int i = 0; i < Paws.childCount; i++)
+			childPaws[i] = Paws.GetChild(i);
 	}
 
 	private void Inventory_OnDropItem(Inventory.Cell cell)
@@ -43,5 +46,24 @@ public class InvPlayer : MonoBehaviour
 		{
 			Inventory.Drop(0);
 		}
+		else 
+			for (int i = 1; i < 10; i++)
+				if (Input.GetKeyDown(i.ToString()))
+					if (i <= Inventory.Belt.Length)
+						GetOnPaws(Inventory.Belt[i - 1]);
+	}
+	public void GetOnPaws(Inventory.Cell cell)
+	{
+
+		if (cell.Id > Inventory.Items.Length || cell.Id < 0)
+		{
+			for (int i = 0; i < childPaws.Length; i++)
+				childPaws[i].gameObject.SetActive(false);
+			return;
+		}
+		for (int i = 0; i < childPaws.Length; i++)
+			childPaws[i].gameObject.SetActive(
+				childPaws[i].name == Inventory.Items[cell.Id].Name);
+
 	}
 }
