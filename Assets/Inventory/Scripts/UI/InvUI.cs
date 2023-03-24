@@ -79,8 +79,10 @@ public class InvUI : MonoBehaviour
 	private void ReloadUIElements()
 	{
 		if (IsOpen)
+		{
 			for (int i = 0; i < Bagpack.Length; i++)
 				cellsBagpack[i].SetInfo(Bagpack[i]);
+		}
 		for (int i = 0; i < Belt.Length; i++)
 			cellsBelt[i].SetInfo(Belt[i]);
 

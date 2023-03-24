@@ -135,10 +135,11 @@ public static class Inventory
 				num = cells[cellId].Num;
 				Debug.LogError("Drop object error\nThe required quantity is too large");
 			}
-			OnDropItem?.Invoke(new Cell(cells[cellId].Id, num));
+			Cell dropC = new Cell(cells[cellId].Id, num);
 			cells[cellId].Num -= num;
 			if (cells[cellId].Num <= 0)
 				cells[cellId].Clear();
+			OnDropItem?.Invoke(dropC);
 			return true;
 		}
 		else

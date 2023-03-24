@@ -7,6 +7,8 @@ public class InvPlayer : MonoBehaviour
 	[SerializeField]
 	private Transform Paws;
 	private Transform[] childPaws;
+	private uint itemIntPaws = 0;
+
 	void Start()
 	{
 		Inventory.OnDropItem += Inventory_OnDropItem;
@@ -27,7 +29,6 @@ public class InvPlayer : MonoBehaviour
 		}
 	}
 
-	// Update is called once per frame
 	void Update()
 	{
 		if (Input.GetKeyUp(InvSettingsKey.TakeItem))
@@ -42,15 +43,19 @@ public class InvPlayer : MonoBehaviour
 						Destroy(hitGM);
 			}
 		}
-		else if (Input.GetKeyUp(KeyCode.N))
+		else if (Input.GetKeyUp(KeyCode.G))
 		{
-			Inventory.Drop(0);
+			Inventory.DropBelt(itemIntPaws);
+			GetOnPaws(Inventory.Belt[itemIntPaws]);
 		}
-		else 
+		else
 			for (int i = 1; i < 10; i++)
 				if (Input.GetKeyDown(i.ToString()))
 					if (i <= Inventory.Belt.Length)
+					{
 						GetOnPaws(Inventory.Belt[i - 1]);
+						itemIntPaws = (uint)i - 1;
+					}
 	}
 	public void GetOnPaws(Inventory.Cell cell)
 	{
