@@ -47,6 +47,7 @@ public class CraftUI : MonoBehaviour
 	{
 		GameObject button = Instantiate(CraftUICell, CraftUICellsPanel);
 		button.GetComponent<Button>().onClick.AddListener(delegate { Craft(recipe); });
+		button.GetComponent<CraftCellUI>().SetInfo(recipe);
 		CraftUICells.Add(button);
 	}
 	public void Craft(CraftSystem.Recipe recipe)
