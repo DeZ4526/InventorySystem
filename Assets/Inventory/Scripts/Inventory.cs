@@ -13,7 +13,10 @@ public static class Inventory
 	}
 	public enum ItemType : byte
 	{
-
+		None,
+		Weapon,
+		Food,
+		Item
 	}
 	public static Item[] Items = null;
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using static Inventory;
 
 public class InvUI : MonoBehaviour
@@ -12,6 +13,8 @@ public class InvUI : MonoBehaviour
 	[SerializeField]
 	private Transform InventoryUiCellsPanelBelt;
 
+	private InvCellUI SelectedItem;
+
 	private InvCellUI[] cellsBagpack;
 	private InvCellUI[] cellsBelt;
 
@@ -23,6 +26,12 @@ public class InvUI : MonoBehaviour
 		OnChangeSelectedItem += InvUI_OnChangeSelectedItem;
 		OnAddItem += InvUI_OnAddItem;
 		OnDropItem += InvUI_OnDropItem;
+		CraftSystem.OnCraft += CraftSystem_OnCraft;
+	}
+
+	private void CraftSystem_OnCraft(CraftSystem.Recipe recipe)
+	{
+		ReloadUIElements();
 	}
 
 	private void InvUI_OnDropItem(Cell cell)
@@ -38,6 +47,12 @@ public class InvUI : MonoBehaviour
 	private void InvUI_OnChangeSelectedItem(Cell cell)
 	{
 		ReloadUIElements();
+		if(Inventory.SelectedItem.Id != -1)
+		{
+			SelectedItem = Instantiate(Cell, InventoryUi.transform).GetComponent<InvCellUI>();
+			SelectedItem.SetInfo(Inventory.SelectedItem);
+		}
+		else if(SelectedItem != null) Destroy(SelectedItem.gameObject);
 	}
 
 	private void Inventory_OnHide()
@@ -61,7 +76,10 @@ public class InvUI : MonoBehaviour
 		if (Input.GetKeyDown(InvSettingsKey.InvOpen))
 			if (!IsOpen) Show();
 			else Hide();
+		if(IsOpen && SelectedItem != null)
+			SelectedItem.transform.position = Input.mousePosition + new Vector3(51, -51);
 	}
+
 	private void ReloadUI()
 	{
 		if (Cell == null) Debug.LogError("InvUI : Please set Cell");
