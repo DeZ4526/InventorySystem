@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class ItemsSettings : MonoBehaviour
+namespace Inventory
 {
-	[SerializeField]
-	private Inventory.Item[] Items;
-	[SerializeField]
-	private GameObject errorObject;
-	public GameObject ErrorObject { get => errorObject; }
-
-	void Start()
+	public class ItemsSettings : MonoBehaviour
 	{
-		Inventory.Items ??= Items;
-		Inventory.ErrorObject ??= ErrorObject;
+		[SerializeField]
+		private Inventory.Item[] Items;
+		[SerializeField]
+		private GameObject errorObject;
+		public GameObject ErrorObject { get => errorObject; }
+
+		void Start()
+		{
+			Inventory.Items ??= Items;
+			Inventory.ErrorObject ??= ErrorObject;
+		}
 	}
 }

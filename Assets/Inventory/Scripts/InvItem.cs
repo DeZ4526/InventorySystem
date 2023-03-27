@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class InvItem : MonoBehaviour
+namespace Inventory
 {
-	public Inventory.Cell item;
+	public class InvItem : MonoBehaviour
+	{
+		public Inventory.Cell item;
+	}
 }

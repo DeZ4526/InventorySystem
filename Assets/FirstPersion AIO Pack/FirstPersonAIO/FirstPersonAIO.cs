@@ -329,7 +329,7 @@ public class FirstPersonAIO : MonoBehaviour
 
         private void Update()
         {
-                    if (Inventory.IsOpen) return;
+                    if (Inventory.Inventory.IsOpen) return;
                 #region Look Settings - Update
 
                 if (enableCameraMovement)
