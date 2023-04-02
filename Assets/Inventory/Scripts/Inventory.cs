@@ -1,13 +1,22 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Inventory.Editor;
 
 namespace Inventory
 {
 	public static class Inventory
 	{
+		static ItemsDatabase Database;
+
 		static Inventory()
 		{
+			if (Database == null)
+			{
+				Database = (ItemsDatabase)Resources.Load("ItemsSettings");
+				Items = Database.items.ToArray();
+				ErrorObject = Database.ErrorObject;
+			}
 			for (int i = 0; i < Bagpack.Length; i++)
 				Bagpack[i] = new Cell();
 			for (int i = 0; i < Belt.Length; i++)
@@ -20,6 +29,7 @@ namespace Inventory
 			Food,
 			Item
 		}
+
 		public static Item[] Items = null;
 
 		public static Cell[] Bagpack = new Cell[20];
@@ -249,7 +259,7 @@ namespace Inventory
 			public ItemType Type;
 			[SerializeField]
 			private GameObject gameObject;
-			public GameObject SpawnObject { get => gameObject ?? ErrorObject; }
+			public GameObject SpawnObject { get => gameObject ?? ErrorObject; set => gameObject = value; }
 			public string Description;
 			public uint MaxCol;
 

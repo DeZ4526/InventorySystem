@@ -430,6 +430,7 @@ GameObject:
   - component: {fileID: 432660240}
   - component: {fileID: 432660242}
   - component: {fileID: 432660241}
+  - component: {fileID: 432660243}
   m_Layer: 0
   m_Name: InventorySettings
   m_TagString: Untagged
@@ -535,6 +536,18 @@ MonoBehaviour:
     Input:
     - Id: 0
       Num: 1
+--- !u!114 &432660243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432660237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615eb2395a7d3da48838e2eee3921eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &474403644 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1743903104223250, guid: 2e62f5703e5f8d2488a5e1bc8433be41, type: 3}
@@ -1075,6 +1088,7 @@ GameObject:
   - component: {fileID: 1307976106}
   - component: {fileID: 1307976105}
   - component: {fileID: 1307976104}
+  - component: {fileID: 1307976108}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -1159,6 +1173,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1307976108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307976103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47febac21e850934caaed291c3c7cbe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1444665001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1276,7 +1302,7 @@ GameObject:
   - component: {fileID: 1772421991}
   - component: {fileID: 1772421990}
   m_Layer: 0
-  m_Name: Test Item1
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
