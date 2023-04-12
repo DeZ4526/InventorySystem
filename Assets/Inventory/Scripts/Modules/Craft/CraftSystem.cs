@@ -1,3 +1,5 @@
+using Inventory.Craft.Editor;
+using Inventory.Editor;
 using System.Collections.Generic;
 using UnityEngine;
 using static Inventory.Inventory;
@@ -7,9 +9,14 @@ namespace Inventory.Craft
 	public static class CraftSystem
 	{
 		public static Recipe[] Recipes;
-
+		private static CraftDatabase Database;
 		static CraftSystem()
 		{
+			if (Database == null)
+			{
+				Database = (CraftDatabase)Resources.Load("CraftDatabase");
+				Recipes = Database.Items.ToArray();
+			}
 			Connector.Init();
 		}
 		public static Recipe[] GetAvailableRecipes()
